@@ -1,6 +1,6 @@
 # AI Safety Hackathon
 
-[Slides from presentation](https://docs.google.com/presentation/d/1E8STFqz59n491DmEP1HxcAXwF4JpXBKfhqEaMRMyyCc/edit#slide=id.g3ab13f52bc_0_67)
+- [Slides from presentation](https://docs.google.com/presentation/d/1E8STFqz59n491DmEP1HxcAXwF4JpXBKfhqEaMRMyyCc/edit#slide=id.g3ab13f52bc_0_67)
 
 Our focus:
 
