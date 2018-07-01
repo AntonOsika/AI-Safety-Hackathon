@@ -14,6 +14,7 @@ RL Environment built for the challenges in the above paper:
 - [Alignment for Advanced Machine Learning Systems](https://intelligence.org/files/AlignmentMachineLearning.pdf)
 
 ### More resources
+[Slides from presentation](https://docs.google.com/presentation/d/1E8STFqz59n491DmEP1HxcAXwF4JpXBKfhqEaMRMyyCc/edit#slide=id.g3ab13f52bc_0_67)
 [http://www.existential-risk.org/concept.pdf](http://www.existential-risk.org/concept.pdf)
 
 ## Code 
