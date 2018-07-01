@@ -18,13 +18,4 @@ RL Environment built for the challenges in the above paper:
 ### More resources
 [http://www.existential-risk.org/concept.pdf](http://www.existential-risk.org/concept.pdf)
 
-## Code 
-Installation:
-
-```bash
-git clone --recursive https://github.com/antonosika/ai-safety-hackathon
-cd pycolab
-pip install -e .
-python learner.py
-```
 
