@@ -14,7 +14,7 @@ import copy
 
 
 ### TODO:
-- Replace digits of boxes with the same symbol
+- Replace digits of boxes with one symbol for all boxes
 
 """
 
@@ -50,22 +50,26 @@ def gen_history():
 
 # Now we have some history, time to learn from it!
 
-def gen_conditions(include_time=False):
-    # WIP
+def gen_conditions():
+    # We need to distribute complexity (= distance)
+    # Each condition is a position and an object
     max_distance = 2
-    min_time = -1
+    max_time = 0
     objs = 11
 
     n_rel_positions = max_distance*2 + 1
-    max_total_complexity = n_rel_positions**2 + include_time
 
-    times = list(range(0, min_time, -1))
-    cols = [0] + zip(range(max_distance + 1), range(0, -max_distance - 1, -1))
+    zipped = zip(range(max_distance + 1), range(0, -max_distance - 1, -1))
+    cols = [0] + [x for xx in zipped for x in xx]
     rows = cols
-    # rows = copy.deepcopy(cols)
 
-    # TODO, loop through conditions in order of complexity:
-    # while
+    # loop through conditions in order of complexity:
+    for time in range(max_time+1):
+        for n in range(n_rel_positions*2):
+            gen = distribute(n, 2, n_rel_positions)
+            for i, j in gen:
+                for obj in range(objs):
+                    yield [-time, cols[i], rows[i], obj]
 
 
 def init_rule(preconditions, action, postcondition):
@@ -80,22 +84,36 @@ def init_rule(preconditions, action, postcondition):
     return rule
 
 def distribute(n, bins, n_max):
-    assert bins > 0
+    """
+    Distributes the integer `n` into `bins` number of terms that sum to n.
+
+    # Args:
+        n: integer, the number to distribute
+        bins: integer, the number of terms distriubte into
+        n_max: the maximum value of any bin
+    """
+    if bins == 0:
+        return []
 
     if bins == 1:
-        return [[n]]
+        return [[min(n, n_max)]]
 
     def gen():
-        for i in range(min(n+1, n_max)):
+        i0 = max(0, n - n_max*(bins-1))
+        i1 = min(n+1, n_max+1)
+        for i in range(i0, max(i0, i1)):
             for x in distribute(n - i, bins - 1, n_max):
-                yield chain([i], x)
+                yield x + [i]
     return gen()
+
 
 def init_rule_gen():
     """
     Generates the next 'least complex' set of possible rules.
     """
-    preconditions = list(gen_conditions(True))
+    # We loop over the max complexity and it should be possible
+    # to have loops where distribute doesn't yield anything
+    preconditions = list(gen_conditions())
     postconditions = list(gen_conditions())
 
     for n_preconditions in count(1):
@@ -103,6 +121,7 @@ def init_rule_gen():
 
         for i in range(max_complexity):
             for j in range(min(i, len(postconditions))):
+                # We just need one postcondition per rule
                 postcondition = postconditions[j]
                 remaining = max_complexity - j
                 for precondition_config in distribute(remaining, n_preconditions, len(preconditions)):
@@ -111,7 +130,7 @@ def init_rule_gen():
                         yield init_rule(precondition, action, postcondition)
 
 
-# Not necessary:
+# Probably not necessary (?):
 # # Mapping from (row, col, new_object) to preconditions that would end up in the target position
 # rule_target_lookup = {}
 
