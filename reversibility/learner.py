@@ -11,11 +11,6 @@ import copy
 4. Open IPython in a folder that contains this file and the pycolab repo
 5. `%run learner.py%
 6. Interact with the history in `game_histories`
-
-
-### TODO:
-- Replace digits of boxes with one symbol for all boxes
-
 """
 
 from pycolab.examples import warehouse_manager
