@@ -5,6 +5,9 @@ from itertools import count, chain
 import copy 
 
 """
+This is currently "pseudocode" for the idea.
+
+To experiment:
 1. Clone pycolab in the same directory of this file.
 2. `cd pycolab`
 3. `pip install -e .`
@@ -104,14 +107,18 @@ def distribute(n, bins, n_max):
 
 def init_rule_gen():
     """
-    Generates the next 'least complex' set of possible rules.
+    A rule is a (set of) conditions on the current state, and an action, and the condition on the state that this action would result in. 
+    
+    We define complexity of a rule as the number of conditions times the spatial distance between in the conditions.
+    
+    This function returns an iterator of the next 'least complex' set of possible rules.
     """
-    # We loop over the max complexity and it should be possible
-    # to have loops where distribute doesn't yield anything
     preconditions = list(gen_conditions())
     postconditions = list(gen_conditions())
 
+    
     for n_preconditions in count(1):
+        # General forumula for maximal complexity (we just have n_preconditions = 1 for now)
         max_complexity = n_preconditions*len(preconditions) + len(postconditions)
 
         for i in range(max_complexity):
@@ -123,11 +130,6 @@ def init_rule_gen():
                     precondition = [preconditions[i] for i in precondition_config]
                     for action in range(4):
                         yield init_rule(precondition, action, postcondition)
-
-
-# Probably not necessary (?):
-# # Mapping from (row, col, new_object) to preconditions that would end up in the target position
-# rule_target_lookup = {}
 
 def find_simplest_explanations(game_histories):
     rules_gen = init_rule_gen()
@@ -158,8 +160,11 @@ def find_simplest_explanations(game_histories):
             if len(changes - predicted_changes) > 0:
                 failed = True
                 break
-
+                
+        return rules
 
 def main():
     history = gen_history()
-    # find_simplest_explanations(history)
+
+    # The whole algorithm, loops indefinitely
+    # found_rules = find_simplest_explanations(history)
