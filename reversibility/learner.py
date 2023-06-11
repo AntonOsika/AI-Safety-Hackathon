@@ -167,4 +167,8 @@ def main():
     history = gen_history()
 
     # The whole algorithm, loops indefinitely
-    # found_rules = find_simplest_explanations(history)
+    if input('Try to find rules that explain? (y/n)') == 'y':
+        found_rules = find_simplest_explanations(history)
+    
+if __name__ == '__main__':
+    main()
